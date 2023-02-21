@@ -16,8 +16,9 @@ export const shopGUI = async function (advancedTexture: AdvancedDynamicTexture,s
     const playerUI = AdvancedDynamicTexture.CreateFullscreenUI("UI");
     //await advancedTexture.parseFromSnippetAsync(_shopGUI);
 
-  playerUI.idealWidth;
-  playerUI.idealHeight;
+  playerUI.idealWidth = 1920;
+  playerUI.idealHeight = 1080;
+  //playerUI.useSmallestIdeal = true;
   playerUI.background = "gray";
   //โชว์รูปภาพในหน้าร้านค้า
   const img = new Image("image", "./images/" + text);
@@ -58,5 +59,18 @@ export const shopGUI = async function (advancedTexture: AdvancedDynamicTexture,s
   price.textWrapping = true;
   playerUI.addControl(price);
 
- 
+  const button = Button.CreateSimpleButton("button","BUTTON");
+  button.width = "200px";
+  button.height = "80px";
+  button.thickness = 0;
+  button.verticalAlignment = 0;
+  button.horizontalAlignment = 1;
+  button.top = "20px";
+  playerUI.addControl(button);
+
+  button.onPointerClickObservable.add(() => {
+    playerUI.dispose();
+  })
+
+  //setTimeout(function(){{playerUI.dispose();}}, 5000);
 };

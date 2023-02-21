@@ -54,8 +54,6 @@ const createScene = (canvas: HTMLCanvasElement) => {
         m.isPickable = false;
       });
 
-      
-
       return {
         mesh: outer as Mesh,
       };
@@ -108,7 +106,7 @@ const createScene = (canvas: HTMLCanvasElement) => {
         roadMesh.isPickable = false;
 
         const shop1 = function () {
-          shopGUI(AdvancedDynamicTexture,scene,"apple.png","apple","50");
+          shopGUI(AdvancedDynamicTexture, scene, "apple.png", "apple", "50");
         };
 
         const shop11 = meshes.find(
@@ -120,31 +118,27 @@ const createScene = (canvas: HTMLCanvasElement) => {
         );
 
         const shop2 = function () {
-          shopGUI(AdvancedDynamicTexture,scene,"beer.png","beer","100");
+          shopGUI(AdvancedDynamicTexture, scene, "beer.png", "beer", "100");
         };
 
-        const shop12 = meshes.find(
-          (mesh) => mesh.name === "House_World ap_0"
-        );
+        const shop12 = meshes.find((mesh) => mesh.name === "House_World ap_0");
         shop12.actionManager = new ActionManager();
         shop12.actionManager.registerAction(
           new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop2)
         );
 
         const shop3 = function () {
-          shopGUI(AdvancedDynamicTexture,scene,"cat.jpg","cat","500");
+          shopGUI(AdvancedDynamicTexture, scene, "cat.jpg", "cat", "500");
         };
 
-        const shop13 = meshes.find(
-          (mesh) => mesh.name === "Shop_World ap_0"
-        );
+        const shop13 = meshes.find((mesh) => mesh.name === "Shop_World ap_0");
         shop13.actionManager = new ActionManager();
         shop13.actionManager.registerAction(
           new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop3)
         );
 
         const shop4 = function () {
-          shopGUI(AdvancedDynamicTexture,scene,"muffin.png","muffin","80");
+          shopGUI(AdvancedDynamicTexture, scene, "muffin.png", "muffin", "80");
         };
 
         const shop14 = meshes.find(
