@@ -1,20 +1,15 @@
-import { Scene } from "@babylonjs/core";
 import {
   AdvancedDynamicTexture,
   Button,
-  Control,
   Image,
-  StackPanel,
   TextBlock,
 } from "@babylonjs/gui";
 
-const _shopGUI = "#2MPG74#11";
 
 let money = 1000;
 
 export const shopGUI = async function (
   advancedTexture: AdvancedDynamicTexture,
-  scene: Scene,
   text: string,
   name: string,
   pricee: any
@@ -34,11 +29,11 @@ export const shopGUI = async function (
 
   //จำนวนเงิน
   const moneyText = new TextBlock();
-  moneyText.text = "Money : " + money;
+  moneyText.text = "Money : " + money + " Baht";
   moneyText.color = "blue";
   moneyText.height = "50px";
   moneyText.fontSize = 40;
-  moneyText.top = "-365px";
+  moneyText.top = "-300px";
   moneyText.left = "660px";
   moneyText.outlineColor = "white";
   moneyText.outlineWidth = 10;
@@ -55,7 +50,7 @@ export const shopGUI = async function (
 
   //ราคาสินค้า
   const price = new TextBlock();
-  price.text = "Price : " + pricee;
+  price.text = "Price : " + pricee + " Baht";
   price.fontSize = 30;
   price.top = "390px";
   price.width = "300px";
@@ -65,22 +60,24 @@ export const shopGUI = async function (
   playerUI.addControl(price);
 
   //ออกจากร้านค้า
-  const button = Button.CreateSimpleButton("button", "EXIT");
-  button.width = "150px";
-  button.height = "80px";
-  button.thickness = 0;
-  button.background = "red";
-  button.verticalAlignment = 0;
-  button.horizontalAlignment = 1;
-  button.cornerRadius = 40;
-  button.color = "white";
-  button.top = "20px";
-  playerUI.addControl(button);
+  const exitButton = Button.CreateSimpleButton("button", "EXIT");
+  exitButton.width = "150px";
+  exitButton.height = "80px";
+  exitButton.left = "-100px";
+  exitButton.thickness = 0;
+  exitButton.background = "red";
+  exitButton.verticalAlignment = 0;
+  exitButton.horizontalAlignment = 1;
+  exitButton.cornerRadius = 40;
+  exitButton.color = "white";
+  exitButton.top = "20px";
+  playerUI.addControl(exitButton);
 
   //ซื้อสินค้า
   const buyButton = Button.CreateSimpleButton("buyButton", "BUY");
   buyButton.width = "150px";
   buyButton.height = "80px";
+  buyButton.left = "-100px";
   buyButton.thickness = 0;
   buyButton.background = "blue";
   buyButton.verticalAlignment = 0;
@@ -90,17 +87,16 @@ export const shopGUI = async function (
   buyButton.top = "700px";
   playerUI.addControl(buyButton);
 
-  button.onPointerClickObservable.add(() => {
+  exitButton.onPointerClickObservable.add(() => {
     playerUI.dispose();
   });
 
   buyButton.onPointerClickObservable.add(() => {
-    if(money<pricee){
-      price.text = "Not enough money!!"
-    }else{
+    if (money < pricee) {
+      price.text = "Not enough money!!";
+    } else {
       money -= pricee;
-      moneyText.text = "Money: " + money;
+      moneyText.text = "Money: " + money + " Baht";
     }
-
   });
 };

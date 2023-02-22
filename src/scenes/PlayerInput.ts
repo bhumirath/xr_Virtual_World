@@ -3,7 +3,6 @@ import {
   ExecuteCodeAction,
   Scalar,
   Scene,
-  Mesh,
   Vector3,
 } from "@babylonjs/core";
 
@@ -16,8 +15,6 @@ export class PlayerInput {
 
   public horizontalAxis: number = 0;
   public verticalAxis: number = 0;
-
-  private _lastGroundPos: Vector3 = Vector3.Zero();
 
   constructor(scene: Scene) {
     this._scene = scene;

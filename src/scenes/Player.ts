@@ -5,9 +5,7 @@ import {
   Mesh,
   UniversalCamera,
   Quaternion,
-  ArcRotateCamera,
 } from "@babylonjs/core";
-import { ThinSprite } from "@babylonjs/core/Sprites/thinSprite";
 import type { PlayerInput } from "../scenes/PlayerInput";
 
 export class Player extends TransformNode {
@@ -29,7 +27,7 @@ export class Player extends TransformNode {
   private _inputAmt: number;
   private _input: PlayerInput;
 
-  private static readonly PLAYER_SPEED: number = 0.2;
+  private static readonly PLAYER_SPEED: number = 0.1;
   private static readonly ORIGINAL_TILT: Vector3 = new Vector3(
     Math.PI * 0.25,
     0,

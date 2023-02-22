@@ -12,8 +12,6 @@ import {
   Mesh,
   ExecuteCodeAction,
   ActionManager,
-  PhysicsImpostor,
-  OimoJSPlugin,
 } from "@babylonjs/core";
 import "@babylonjs/loaders";
 import { shopGUI } from "./GUI";
@@ -25,20 +23,20 @@ const createScene = (canvas: HTMLCanvasElement) => {
 
   new HemisphericLight("light", Vector3.Up(), scene);
 
-  const outer = MeshBuilder.CreateBox(
-    "outer",
+  const box = MeshBuilder.CreateBox(
+    "box",
     { width: 2, depth: 1, height: 3 },
     scene
   );
-  outer.isVisible = false;
-  outer.isPickable = false;
-  outer.checkCollisions = true;
+  box.isVisible = false;
+  box.isPickable = false;
+  box.checkCollisions = true;
 
-  outer.bakeTransformIntoVertices(Matrix.Translation(0, 1.5, 0));
-  outer.ellipsoid = new Vector3(1, 1.5, 1);
-  outer.ellipsoidOffset = new Vector3(0, 1.5, 0);
+  box.bakeTransformIntoVertices(Matrix.Translation(0, 1.5, 0));
+  box.ellipsoid = new Vector3(1, 1.5, 1);
+  box.ellipsoidOffset = new Vector3(0, 1.5, 0);
 
-  outer.rotationQuaternion = new Quaternion(0, 1, 0, 0);
+  box.rotationQuaternion = new Quaternion(0, 1, 0, 0);
 
   SceneLoader.ImportMesh(
     "",
@@ -48,8 +46,8 @@ const createScene = (canvas: HTMLCanvasElement) => {
     function (result) {
       const root = result[0];
       const body = root;
-      body.parent = outer;
-      body.isVisible = true; // make the player mesh visible
+      body.parent = box;
+      body.isVisible = true;
       body.isPickable = false;
       body.checkCollisions = true;
       body.getChildMeshes().forEach((m) => {
@@ -57,15 +55,15 @@ const createScene = (canvas: HTMLCanvasElement) => {
       });
 
       return {
-        mesh: outer as Mesh,
+        mesh: box as Mesh,
       };
     }
   );
 
-  const ground = SceneLoader.ImportMesh(
+  SceneLoader.ImportMesh(
     "",
     "./models/",
-    "city2.glb",
+    "citywall.glb",
     scene,
     function (meshes) {
       const asset = meshes.forEach((m) => {
@@ -91,67 +89,56 @@ const createScene = (canvas: HTMLCanvasElement) => {
 
       const roadMesh = meshes.find((mesh) => mesh.name === "ROAD_TRANSFORM");
 
-      outer.position.copyFrom(roadMesh.getAbsolutePosition());
+      box.position.copyFrom(roadMesh.getAbsolutePosition());
 
+      //กำหนดร้านค้า 4 ร้านค้า
       const shop1 = function () {
-        shopGUI(AdvancedDynamicTexture, scene, "apple.png", "apple", "50");
+        shopGUI(AdvancedDynamicTexture,"apple.png", "apple", "50");
       };
 
-      const shop11 = meshes.find((mesh) => mesh.name === "House_2_World ap_0");
-      shop11.actionManager = new ActionManager();
-      shop11.actionManager.registerAction(
+      const shop_1 = meshes.find((mesh) => mesh.name === "House_2_World ap_0");
+      shop_1.actionManager = new ActionManager();
+      shop_1.actionManager.registerAction(
         new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop1)
       );
 
       const shop2 = function () {
-        shopGUI(AdvancedDynamicTexture, scene, "beer.png", "beer", "100");
+        shopGUI(AdvancedDynamicTexture,"beer.png", "beer", "100");
       };
 
-      const shop12 = meshes.find((mesh) => mesh.name === "House_World ap_0");
-      shop12.actionManager = new ActionManager();
-      shop12.actionManager.registerAction(
+      const shop_2 = meshes.find((mesh) => mesh.name === "House_World ap_0");
+      shop_2.actionManager = new ActionManager();
+      shop_2.actionManager.registerAction(
         new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop2)
       );
 
       const shop3 = function () {
-        shopGUI(AdvancedDynamicTexture, scene, "cat.jpg", "cat", "500");
+        shopGUI(AdvancedDynamicTexture,"cat.jpg", "cat", "500");
       };
 
-      const shop13 = meshes.find((mesh) => mesh.name === "Shop_World ap_0");
-      shop13.actionManager = new ActionManager();
-      shop13.actionManager.registerAction(
+      const shop_3 = meshes.find((mesh) => mesh.name === "Shop_World ap_0");
+      shop_3.actionManager = new ActionManager();
+      shop_3.actionManager.registerAction(
         new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop3)
       );
 
       const shop4 = function () {
-        shopGUI(AdvancedDynamicTexture, scene, "muffin.png", "muffin", "80");
+        shopGUI(AdvancedDynamicTexture,"muffin.png", "muffin", "80");
       };
 
-      const shop14 = meshes.find((mesh) => mesh.name === "House_3_World ap_0");
-      shop14.actionManager = new ActionManager();
-      shop14.actionManager.registerAction(
+      const shop_4 = meshes.find((mesh) => mesh.name === "House_3_World ap_0");
+      shop_4.actionManager = new ActionManager();
+      shop_4.actionManager.registerAction(
         new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop4)
       );
 
       return scene;
     }
   );
-
-  const input = new PlayerInput(scene);
-  const player = new Player(outer, scene, input);
-  const camera = player.activatePlayerCamera();
-
-  /*
-  window.addEventListener('load', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
   
-  window.addEventListener('resize', () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
-  */
+  const input = new PlayerInput(scene);
+  const player = new Player(box, scene, input);
+  const camera = player.activatePlayerCamera();
 
   engine.runRenderLoop(() => {
     scene.render();
