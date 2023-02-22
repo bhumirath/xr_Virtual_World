@@ -41,7 +41,7 @@ const createScene = (canvas: HTMLCanvasElement) => {
   SceneLoader.ImportMesh(
     "",
     "./models/",
-    "toad_run.glb",
+    "helmet2.glb",
     scene,
     function (result) {
       const root = result[0];
@@ -99,6 +99,7 @@ const createScene = (canvas: HTMLCanvasElement) => {
     scene,
     function (meshes) {
       const roadMesh = meshes.find((mesh) => mesh.name === "ROAD_TRANSFORM");
+      
       if (roadMesh) {
         outer.position.copyFrom(roadMesh.getAbsolutePosition());
         outer.position.y += 1.5;
