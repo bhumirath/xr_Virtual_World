@@ -12,15 +12,19 @@ const _shopGUI = "#2MPG74#11";
 
 let money = 1000;
 
-export const shopGUI = async function (advancedTexture: AdvancedDynamicTexture,scene: Scene,text:string,name:string,pricee:any ) {
-    const playerUI = AdvancedDynamicTexture.CreateFullscreenUI("UI");
-
+export const shopGUI = async function (
+  advancedTexture: AdvancedDynamicTexture,
+  scene: Scene,
+  text: string,
+  name: string,
+  pricee: any
+) {
+  const playerUI = AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
   playerUI.idealWidth = 1920;
   playerUI.idealHeight = 1080;
-  
+
   playerUI.background = "gray";
-  
 
   const img = new Image("image", "./images/" + text);
   img.width = "600px";
@@ -61,7 +65,7 @@ export const shopGUI = async function (advancedTexture: AdvancedDynamicTexture,s
   playerUI.addControl(price);
 
   //ออกจากร้านค้า
-  const button = Button.CreateSimpleButton("button","EXIT");
+  const button = Button.CreateSimpleButton("button", "EXIT");
   button.width = "150px";
   button.height = "80px";
   button.thickness = 0;
@@ -74,7 +78,7 @@ export const shopGUI = async function (advancedTexture: AdvancedDynamicTexture,s
   playerUI.addControl(button);
 
   //ซื้อสินค้า
-  const buyButton = Button.CreateSimpleButton("buyButton","BUY");
+  const buyButton = Button.CreateSimpleButton("buyButton", "BUY");
   buyButton.width = "150px";
   buyButton.height = "80px";
   buyButton.thickness = 0;
@@ -88,11 +92,10 @@ export const shopGUI = async function (advancedTexture: AdvancedDynamicTexture,s
 
   button.onPointerClickObservable.add(() => {
     playerUI.dispose();
-  })
+  });
 
   buyButton.onPointerClickObservable.add(() => {
     money -= pricee;
-    moneyText.text = "Money: "+ money;
-  })
-
+    moneyText.text = "Money: " + money;
+  });
 };

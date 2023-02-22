@@ -12,6 +12,8 @@ import {
   Mesh,
   ExecuteCodeAction,
   ActionManager,
+  PhysicsImpostor,
+  OimoJSPlugin,
 } from "@babylonjs/core";
 import "@babylonjs/loaders";
 import { shopGUI } from "./GUI";
@@ -64,47 +66,38 @@ const createScene = (canvas: HTMLCanvasElement) => {
 
   const previousPosition = outer.position.clone(); // add this line to keep track of the previous position
 
-  //const ground = SceneLoader.ImportMesh("", "path/to/city/", "city.babylon", scene);
-  /*
   const ground = SceneLoader.ImportMesh(
     "",
     "./models/",
-    "city_mod.glb",
-    scene,function(meshes){
-      const roadMesh = meshes.find(mesh => mesh.name === "ROAD_TRANSFORM"); // Replace "Road" with the actual name of your road mesh
-    if(roadMesh){
-      outer.position.copyFrom(roadMesh.getAbsolutePosition());
-      outer.position.y += 1.5;
-      roadMesh.checkCollisions = true;
-
-    // Create and add a new mesh to the scene // create random box and make collision
-    const box = MeshBuilder.CreateBox("Box", { size: 2 }, scene);
-    box.position = new Vector3(0, 1, 0);
-    box.checkCollisions = true;
-
-    // Add metadata to the new mesh
-    box.metadata = "MyCustomMesh";
-
-    return scene;
-    }else{
-      console.log("no");
-    }
-    });
-    */
-
-  const ground = SceneLoader.ImportMesh(
-    "",
-    "./models/",
-    "city_mod.glb",
+    "city2.glb",
     scene,
     function (meshes) {
-      const roadMesh = meshes.find((mesh) => mesh.name === "ROAD_TRANSFORM");
+      const asset = meshes.forEach((m)=>{
+        m.checkCollisions = true;
+        m.receiveShadows = true;
+        if (m.name == "ROAD_TRANSFORM") {
+          //dont check for collisions, dont allow for raycasting to detect it(cant land on it)
+          m.checkCollisions = false;
+          m.isPickable = false;
+      }
+      //collision meshes
+      if (m.name.includes("collision")) {
+          m.isVisible = false;
+          m.isPickable = true;
+      }
+      //trigger meshes
+      if (m.name.includes("Trigger")) {
+          m.isVisible = false;
+          m.isPickable = false;
+          m.checkCollisions = false;
+      }
+      })
       
-      if (roadMesh) {
+      const roadMesh = meshes.find((mesh) => mesh.name === "ROAD_TRANSFORM");
+
         outer.position.copyFrom(roadMesh.getAbsolutePosition());
-        outer.position.y += 1.5;
-        roadMesh.checkCollisions = true;
-        roadMesh.isPickable = false;
+        //roadMesh.checkCollisions = false;
+        //roadMesh.isPickable = false;
 
         const shop1 = function () {
           shopGUI(AdvancedDynamicTexture, scene, "apple.png", "apple", "50");
@@ -149,85 +142,46 @@ const createScene = (canvas: HTMLCanvasElement) => {
         shop14.actionManager.registerAction(
           new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop4)
         );
-
-        const previousPosition = outer.position.clone();
-
-        // Check for intersections with roadMesh every frame
+        
         /*
-            scene.actionManager.registerAction(
-              new ExecuteCodeAction(ActionManager.OnEveryFrameTrigger, () => {
-                if (!outer.intersectsMesh(roadMesh, true)) {
-                  outer.position.copyFrom(previousPosition);
-                } else {
-                  previousPosition.copyFrom(outer.position);
-                }
-              })
-            );
-            */
-      }
+        outer.physicsImpostor = new PhysicsImpostor(outer, PhysicsImpostor.BoxImpostor, {mass: 5, restitution: 0.2}, scene);
+        outer.physicsImpostor.setMass(5);
+        */
+       
+        /*
+        outer.actionManager.registerAction(
+          new ExecuteCodeAction(
+              {
+                  trigger: ActionManager.OnIntersectionEnterTrigger,
+                  roadMesh,
+              },
+              () => {
+                  outer.position.copyFrom(previousPosition)}));
+                  */
+                  
+            
+      
 
       return scene;
     }
   );
 
-  /*
-    
-            const previousPosition = outer.position.clone();
-
-    scene.actionManager.registerAction(
-              new ExecuteCodeAction(ActionManager.OnEveryFrameTrigger,() => {
-                // Check if outer is not intersecting with the road mesh
-                if (!outer.intersectsMesh(roadMesh, true)) {
-                  // Reset the position of outer to the previous position
-                  outer.position.copyFrom(previousPosition);
-                } else {
-                  // Update the previous position to the current position
-                  previousPosition.copyFrom(outer.position);
-                }
-              })
-            );
-    */
-  /*
-    const ground = SceneLoader.ImportMesh(
-      "",
-      "./models/",
-      "city_mod.glb",
-      scene,
-      function (meshes) {
-        meshes.forEach(function(m) {
-          if (m.name == "ROAD_TRANSFORM") {
-            //dont check for collisions, dont allow for raycasting to detect it(cant land on it)
-            outer.position.copyFrom(m.getAbsolutePosition());
-            outer.position.y += 1.5;
-            m.checkCollisions = false;
-            m.isPickable = false;
-          }
-          //areas that will use box collisions
-          if (m.name.includes("ROAD_Lines_12_World ap_0")) {
-            m.checkCollisions = false;
-            m.isPickable = false;
-          }
-          //collision meshes
-          if (m.name.includes("collision")) {
-            m.isVisible = false;
-            m.isPickable = true;
-          }
-          //trigger meshes
-          if (m.name.includes("Trigger")) {
-            m.isVisible = false;
-            m.isPickable = false;
-            m.checkCollisions = false;
-          }
-        });
-      
-        return scene;
-      }
-    );
-    */
-
   const input = new PlayerInput(scene);
   const player = new Player(outer, scene, input);
   const camera = player.activatePlayerCamera();
+
+
+/*
+  window.addEventListener('load', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+  
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  });
+  */
 
   engine.runRenderLoop(() => {
     scene.render();

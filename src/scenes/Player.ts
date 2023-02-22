@@ -7,6 +7,7 @@ import {
   Quaternion,
   ArcRotateCamera,
 } from "@babylonjs/core";
+import { ThinSprite } from "@babylonjs/core/Sprites/thinSprite";
 import type { PlayerInput } from "../scenes/PlayerInput";
 
 export class Player extends TransformNode {
@@ -28,7 +29,7 @@ export class Player extends TransformNode {
   private _inputAmt: number;
   private _input: PlayerInput;
 
-  private static readonly PLAYER_SPEED: number = 0.1;
+  private static readonly PLAYER_SPEED: number = 0.06;
   private static readonly ORIGINAL_TILT: Vector3 = new Vector3(
     Math.PI * 0.25,
     0,
@@ -109,6 +110,7 @@ export class Player extends TransformNode {
   private _beforeRenderUpdate(): void {
     this._updateFromControls();
     this.mesh.moveWithCollisions(this._moveDirection);
+    this.mesh.position.y = -7.3;
   }
 
   public activatePlayerCamera(): UniversalCamera {
@@ -145,7 +147,11 @@ export class Player extends TransformNode {
     yTilt.parent = this._camRoot;
 
     //our actual camera that's pointing at our root's position
-    this.camera = new UniversalCamera("cam", new Vector3(0, -1, -5), this.scene);
+    this.camera = new UniversalCamera(
+      "cam",
+      new Vector3(0, -1, -5),
+      this.scene
+    );
     this.camera.lockedTarget = this._camRoot.position;
     this.camera.fov = Math.PI * 0.2;
     this.camera.parent = yTilt;
