@@ -95,7 +95,12 @@ export const shopGUI = async function (
   });
 
   buyButton.onPointerClickObservable.add(() => {
-    money -= pricee;
-    moneyText.text = "Money: " + money;
+    if(money<pricee){
+      price.text = "Not enough money!!"
+    }else{
+      money -= pricee;
+      moneyText.text = "Money: " + money;
+    }
+
   });
 };

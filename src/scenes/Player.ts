@@ -29,7 +29,7 @@ export class Player extends TransformNode {
   private _inputAmt: number;
   private _input: PlayerInput;
 
-  private static readonly PLAYER_SPEED: number = 0.06;
+  private static readonly PLAYER_SPEED: number = 0.2;
   private static readonly ORIGINAL_TILT: Vector3 = new Vector3(
     Math.PI * 0.25,
     0,
@@ -108,9 +108,10 @@ export class Player extends TransformNode {
 
   //--GAME UPDATES--
   private _beforeRenderUpdate(): void {
+    const resetPosition = new Vector3(0, 1, 0);
     this._updateFromControls();
     this.mesh.moveWithCollisions(this._moveDirection);
-    this.mesh.position.y = -7.3;
+    this.mesh.position.y = -7.35;
   }
 
   public activatePlayerCamera(): UniversalCamera {

@@ -62,105 +62,76 @@ const createScene = (canvas: HTMLCanvasElement) => {
     }
   );
 
-  //const meshh = scene.getMeshByName("ROAD_TRANSFORM")
-
-  const previousPosition = outer.position.clone(); // add this line to keep track of the previous position
-
   const ground = SceneLoader.ImportMesh(
     "",
     "./models/",
     "city2.glb",
     scene,
     function (meshes) {
-      const asset = meshes.forEach((m)=>{
+      const asset = meshes.forEach((m) => {
         m.checkCollisions = true;
         m.receiveShadows = true;
         if (m.name == "ROAD_TRANSFORM") {
           //dont check for collisions, dont allow for raycasting to detect it(cant land on it)
           m.checkCollisions = false;
           m.isPickable = false;
-      }
-      //collision meshes
-      if (m.name.includes("collision")) {
+        }
+        //collision meshes
+        if (m.name.includes("collision")) {
           m.isVisible = false;
           m.isPickable = true;
-      }
-      //trigger meshes
-      if (m.name.includes("Trigger")) {
+        }
+        //trigger meshes
+        if (m.name.includes("Trigger")) {
           m.isVisible = false;
           m.isPickable = false;
           m.checkCollisions = false;
-      }
-      })
-      
+        }
+      });
+
       const roadMesh = meshes.find((mesh) => mesh.name === "ROAD_TRANSFORM");
 
-        outer.position.copyFrom(roadMesh.getAbsolutePosition());
-        //roadMesh.checkCollisions = false;
-        //roadMesh.isPickable = false;
+      outer.position.copyFrom(roadMesh.getAbsolutePosition());
 
-        const shop1 = function () {
-          shopGUI(AdvancedDynamicTexture, scene, "apple.png", "apple", "50");
-        };
+      const shop1 = function () {
+        shopGUI(AdvancedDynamicTexture, scene, "apple.png", "apple", "50");
+      };
 
-        const shop11 = meshes.find(
-          (mesh) => mesh.name === "House_2_World ap_0"
-        );
-        shop11.actionManager = new ActionManager();
-        shop11.actionManager.registerAction(
-          new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop1)
-        );
+      const shop11 = meshes.find((mesh) => mesh.name === "House_2_World ap_0");
+      shop11.actionManager = new ActionManager();
+      shop11.actionManager.registerAction(
+        new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop1)
+      );
 
-        const shop2 = function () {
-          shopGUI(AdvancedDynamicTexture, scene, "beer.png", "beer", "100");
-        };
+      const shop2 = function () {
+        shopGUI(AdvancedDynamicTexture, scene, "beer.png", "beer", "100");
+      };
 
-        const shop12 = meshes.find((mesh) => mesh.name === "House_World ap_0");
-        shop12.actionManager = new ActionManager();
-        shop12.actionManager.registerAction(
-          new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop2)
-        );
+      const shop12 = meshes.find((mesh) => mesh.name === "House_World ap_0");
+      shop12.actionManager = new ActionManager();
+      shop12.actionManager.registerAction(
+        new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop2)
+      );
 
-        const shop3 = function () {
-          shopGUI(AdvancedDynamicTexture, scene, "cat.jpg", "cat", "500");
-        };
+      const shop3 = function () {
+        shopGUI(AdvancedDynamicTexture, scene, "cat.jpg", "cat", "500");
+      };
 
-        const shop13 = meshes.find((mesh) => mesh.name === "Shop_World ap_0");
-        shop13.actionManager = new ActionManager();
-        shop13.actionManager.registerAction(
-          new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop3)
-        );
+      const shop13 = meshes.find((mesh) => mesh.name === "Shop_World ap_0");
+      shop13.actionManager = new ActionManager();
+      shop13.actionManager.registerAction(
+        new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop3)
+      );
 
-        const shop4 = function () {
-          shopGUI(AdvancedDynamicTexture, scene, "muffin.png", "muffin", "80");
-        };
+      const shop4 = function () {
+        shopGUI(AdvancedDynamicTexture, scene, "muffin.png", "muffin", "80");
+      };
 
-        const shop14 = meshes.find(
-          (mesh) => mesh.name === "House_3_World ap_0"
-        );
-        shop14.actionManager = new ActionManager();
-        shop14.actionManager.registerAction(
-          new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop4)
-        );
-        
-        /*
-        outer.physicsImpostor = new PhysicsImpostor(outer, PhysicsImpostor.BoxImpostor, {mass: 5, restitution: 0.2}, scene);
-        outer.physicsImpostor.setMass(5);
-        */
-       
-        /*
-        outer.actionManager.registerAction(
-          new ExecuteCodeAction(
-              {
-                  trigger: ActionManager.OnIntersectionEnterTrigger,
-                  roadMesh,
-              },
-              () => {
-                  outer.position.copyFrom(previousPosition)}));
-                  */
-                  
-            
-      
+      const shop14 = meshes.find((mesh) => mesh.name === "House_3_World ap_0");
+      shop14.actionManager = new ActionManager();
+      shop14.actionManager.registerAction(
+        new ExecuteCodeAction(ActionManager.OnPickUpTrigger, shop4)
+      );
 
       return scene;
     }
@@ -170,8 +141,7 @@ const createScene = (canvas: HTMLCanvasElement) => {
   const player = new Player(outer, scene, input);
   const camera = player.activatePlayerCamera();
 
-
-/*
+  /*
   window.addEventListener('load', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;

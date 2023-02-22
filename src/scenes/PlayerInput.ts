@@ -36,19 +36,6 @@ export class PlayerInput {
       })
     );
 
-    /*
-    this._scene.actionManager.registerAction(
-      new ExecuteCodeAction({
-          trigger: ActionManager.OnIntersectionEnterTrigger,
-          parameter: this._scene.getMeshByName("ROAD_TRANSFORM")
-      },
-          () => {
-              this._mesh.position.copyFrom(this._lastGroundPos); // need to use copy or else they will be both pointing at the same thing & update together
-          }
-      )
-      
-  );*/
-
     scene.onBeforeRenderObservable.add(() => {
       this._updateFromKeyboard();
     });
