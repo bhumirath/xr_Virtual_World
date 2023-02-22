@@ -12,6 +12,9 @@ export default {
 
     onMounted(() => {
       if (bjsCanvas.value) {
+        // set the canvas to full window size
+        bjsCanvas.value.width = window.innerWidth;
+        bjsCanvas.value.height = window.innerHeight;
         createScene(bjsCanvas.value);
       }
     });
@@ -22,10 +25,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-canvas {
-  width: 200%;
-  height: 100%;
-}
-</style>
